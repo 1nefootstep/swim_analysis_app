@@ -29,7 +29,7 @@ class AnnotatorBloc extends Bloc<AnnotatorEvent, AnnotatorState> {
   Stream<AnnotatorState> _mapCheckpointToState(AnnotatorCheckpointEvent event) async* {
     // write information somewhere...
     Duration position = event.position;
-    checkpoints.add('checkpoint $_checkpointCounter: ${position.toString()}');
+    _checkpoints.add('checkpoint $_checkpointCounter: ${position.toString()}');
     _checkpointCounter += 1;
     print('Checkpoint event captured! ${position.toString()}' );
   }
