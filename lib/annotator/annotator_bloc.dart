@@ -19,7 +19,7 @@ class AnnotatorBloc extends Bloc<AnnotatorEvent, AnnotatorState> {
       yield* _mapCheckpointToState(event as AnnotatorCheckpointEvent);
       break;
     case EAnnotatorEvent.save:
-      _mapSaveEventToState(event as AnnotatorSaveEvent);
+      yield* _mapSaveEventToState(event as AnnotatorSaveEvent);
       break;
     default:
       throw 'Switch fallthrough at AnnotatorBloc.mapEventToState' + event.toString();
