@@ -4,18 +4,26 @@ import 'dart:collection';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
-import 'video_events.dart';
-import 'video_states.dart';
+import '../annotator_bloc.dart';
+import '../annotator_event.dart';
+import 'video_event.dart';
+import 'video_state.dart';
 
 class VideoBloc extends Bloc<VideoEvent, VideoState>{
   VideoPlayerController? _controller;
   VideoPlayerController? get controller => _controller;
-
+  final AnnotatorBloc annotatorBloc;
+  // late final StreamSubscription _annotatorBlocSubscription;
+  // AnnotatorBloc(this.annotatorBloc) : super(VideoInitState()) {
+  //   _annotatorBlocSubscription = annotatorBloc.stream.listen((VideoState state) {
+  //
+  //   });
+  // }
   final Queue<Duration> seekDequeBuffer = Queue();
 
-  bool isInitialized() => _controller?.value?.isInitialized ?? false;
+  bool isInitialized() => _controller?.value.isInitialized ?? false;
 
-  VideoBloc() : super(VideoInitState());
+  VideoBloc({required this.annotatorBloc}) : super(VideoInitState());
 
   @override
   Stream<VideoState> mapEventToState(VideoEvent event) async* {
@@ -31,6 +39,9 @@ class VideoBloc extends Bloc<VideoEvent, VideoState>{
       break;
     case EVideoEvent.seek:
       yield* _mapSeekToState(event as VideoSeekEvent);
+      break;
+    case EVideoEvent.checkpoint:
+      _handleCheckpointEvent(event as VideoCheckpointEvent);
       break;
     default:
       throw 'Switch fallthrough at VideoBloc.mapEventToState' + event.toString();
@@ -94,5 +105,18 @@ class VideoBloc extends Bloc<VideoEvent, VideoState>{
       }
     }
     _controller!.addListener(afterBufferingCallback);
+  }
+
+  void _handleCheckpointEvent(VideoCheckpointEvent event) async {
+    if (_controller == null) {
+      print('Skipping checkpoint event because controller is null');
+      return;
+    }
+    Duration? position = await _controller!.position;
+    if (position == null) {
+      print('Skipping checkpoint event because position is null');
+      return;
+    }
+    annotatorBloc.add(AnnotatorCheckpointEvent(position: position));
   }
 }

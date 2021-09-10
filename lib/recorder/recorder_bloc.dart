@@ -17,7 +17,7 @@ class RecorderBloc extends Bloc<RecorderEvent, RecorderState> {
 
   CameraController? get controller => _controller;
 
-  bool isInitialized() => _controller?.value?.isInitialized ?? false;
+  bool isInitialized() => _controller?.value.isInitialized ?? false;
 
 
 

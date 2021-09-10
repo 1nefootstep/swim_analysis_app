@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 
 import 'general/recorder_failure_alert.dart';
 import 'record_button/camera_buttons.dart';
@@ -46,6 +47,9 @@ class _RecorderScreenState extends State<RecorderScreen>
   @override
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
     BlocProvider.of<RecorderBloc>(context).add(RecorderInitializeEvent());
     super.initState();
   }
@@ -53,6 +57,12 @@ class _RecorderScreenState extends State<RecorderScreen>
   @override
   void dispose() {
     WidgetsBinding.instance!.removeObserver(this);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 
@@ -104,7 +114,7 @@ class _RecorderScreenState extends State<RecorderScreen>
             // somehow need to deal with rotation...
             height: height,
             width: width,
-            child: CameraPreview(context.read<RecorderBloc>().controller!),
+            child: CameraPreview(BlocProvider.of<RecorderBloc>(context).controller!),
           ),
           // CameraPreview(_controller!),
           Align(

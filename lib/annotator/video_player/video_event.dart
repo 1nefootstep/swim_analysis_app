@@ -7,6 +7,7 @@ enum EVideoEvent{
   play,
   pause,
   seek,
+  checkpoint,
 }
 
 abstract class VideoEvent extends Equatable{
@@ -40,4 +41,6 @@ class VideoSeekEvent extends VideoEvent {
   VideoSeekEvent.withDifference(this.seekToDifference, {this.playAfterSeek = false}) : this.seekToPosition = null;
   List<Object?> get props => [eventType, seekToPosition, seekToDifference];
 }
-
+class VideoCheckpointEvent extends VideoEvent {
+  final EVideoEvent eventType = EVideoEvent.checkpoint;
+}

@@ -13,7 +13,7 @@ class PauseButton extends StatelessWidget {
     return FloatingActionButton(
         onPressed: () {
           print('Pause button is pressed');
-          context.read<RecordButtonCubit>().stopRecording();
+          BlocProvider.of<RecordButtonCubit>(context).stopRecording();
         },
         child: Icon(Icons.stop),
         backgroundColor: Colors.black,

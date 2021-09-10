@@ -16,3 +16,9 @@ class VideoFailureState extends VideoState {
   @override
   List<Object?> get props => [errorString];
 }
+class VideoCheckpointState extends VideoState {
+  final Duration? position;
+  VideoCheckpointState({required this.position});
+  @override
+  List<Object?> get props => [position];
+}

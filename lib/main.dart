@@ -15,6 +15,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(CupertinoApp(
     initialRoute: Homepage.routeName,
+    theme: CupertinoThemeData(brightness: Brightness.light),
     onGenerateRoute: router.generateRoute,
   ));
 }

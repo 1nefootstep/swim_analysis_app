@@ -14,7 +14,7 @@ class RecordButton extends StatelessWidget {
     return FloatingActionButton(
       onPressed: () {
         print('Record button is pressed');
-        context.read<RecordButtonCubit>().startRecording();
+        BlocProvider.of<RecordButtonCubit>(context).startRecording();
       },
       // child: Icon(Icons.videocam),
       backgroundColor: Colors.red,
